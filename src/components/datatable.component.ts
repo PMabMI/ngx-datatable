@@ -667,7 +667,7 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit, After
   get visible(): boolean {
     return this._visible;
   }
-  set visible(val: boolean ) {
+  set visible(val: boolean) {
     this._visible = val;
     if(val) this.onResize();
   }
