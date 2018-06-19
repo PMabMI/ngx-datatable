@@ -678,6 +678,7 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit, After
   bodyHeight: number;
   rowCount: number = 0;
   rowDiffer: KeyValueDiffer<{}, {}>;
+  resizeTimeout: any;
 
   _offsetX = new BehaviorSubject(0);
   _visible: boolean;
@@ -844,6 +845,8 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit, After
   @throttleable(5)
   onResize(): void {
     this.recalculate();
+    clearTimeout(this.resizeTimeout);
+    this.resizeTimeout = setTimeout(() => this.cd.detectChanges(), 100);
   }
 
   /**
