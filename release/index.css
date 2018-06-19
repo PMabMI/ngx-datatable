@@ -18,6 +18,9 @@
    * Horizontal Scrolling Adjustments
    */
   /**
+   * This prevents scrollbars appearing during table resize
+  */
+  /**
    * Fixed Header Height Adjustments
    */
   /**
@@ -47,6 +50,10 @@
   .ngx-datatable.scroll-horz .datatable-body {
     overflow-x: auto;
     -webkit-overflow-scrolling: touch; }
+  .ngx-datatable:not(.scroll-vertical) .datatable-body-wrapper {
+    overflow-y: hidden; }
+  .ngx-datatable:not(.scroll-horz) .datatable-body-wrapper {
+    overflow-x: hidden; }
   .ngx-datatable.fixed-header .datatable-header .datatable-header-inner {
     white-space: nowrap; }
     .ngx-datatable.fixed-header .datatable-header .datatable-header-inner .datatable-header-cell {

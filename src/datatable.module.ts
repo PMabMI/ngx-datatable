@@ -31,7 +31,8 @@ import {
   LongPressDirective,
   ResizeableDirective,
   OrderableDirective,
-  DraggableDirective
+  DraggableDirective,
+  ResizeObserverDirective
 } from './directives';
 
 import {
@@ -77,6 +78,7 @@ import {
     DatatableFooterDirective,
     DatatableGroupHeaderTemplateDirective,
     DataTableSummaryRowComponent,
+    ResizeObserverDirective
   ],
   exports: [
     DatatableComponent,

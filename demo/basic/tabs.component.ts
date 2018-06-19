@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'tabs-demo',
   template: `
-    <div>
+    <div  [ngClass]="{'collapsed': isCollapsed}">
       <h3>
         Hidden By Default
         <small>
@@ -12,6 +12,11 @@ import { Component } from '@angular/core';
           </a>
         </small>
       </h3>
+
+      <div class="sidebar" [ngClass]="{'collapsed': isCollapsed}">
+        <span>Sidebar</span>
+        <button (click)="toggleCollapseMode()">+ / -</button>
+      </div>
 
       <div style="width:75%;margin:0 auto">
         <div>
@@ -63,6 +68,7 @@ import { Component } from '@angular/core';
 export class TabsDemoComponent {
 
   rows = [];
+  isCollapsed: boolean = false;
 
   tab1 = true;
   tab2 = false;
@@ -83,6 +89,10 @@ export class TabsDemoComponent {
     };
 
     req.send();
+  }
+
+  toggleCollapseMode() {
+    this.isCollapsed = !this.isCollapsed;
   }
 
 }

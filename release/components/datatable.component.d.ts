@@ -1,14 +1,15 @@
-import { ElementRef, EventEmitter, OnInit, QueryList, AfterViewInit, DoCheck, KeyValueDiffers, KeyValueDiffer, ChangeDetectorRef } from '@angular/core';
+import { ElementRef, EventEmitter, OnInit, QueryList, AfterViewInit, DoCheck, KeyValueDiffers, KeyValueDiffer, ChangeDetectorRef, AfterViewChecked } from '@angular/core';
 import { ScrollbarHelper, DimensionsHelper, ColumnChangesService } from '../services';
 import { ColumnMode, SortType, SelectionType, TableColumn, ContextmenuType } from '../types';
 import { DataTableBodyComponent } from './body';
 import { DatatableGroupHeaderDirective } from './body/body-group-header.directive';
+import { VisibilityDirective } from '../directives';
 import { DataTableColumnDirective } from './columns';
 import { DatatableRowDetailDirective } from './row-detail';
 import { DatatableFooterDirective } from './footer';
 import { DataTableHeaderComponent } from './header';
 import { BehaviorSubject, Subscription } from 'rxjs';
-export declare class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
+export declare class DatatableComponent implements OnInit, DoCheck, AfterViewInit, AfterViewChecked {
     private scrollbarHelper;
     private dimensionsHelper;
     private cd;
@@ -339,6 +340,7 @@ export declare class DatatableComponent implements OnInit, DoCheck, AfterViewIni
      * invoking functions on the body.
      */
     bodyComponent: DataTableBodyComponent;
+    visibilityDirective: VisibilityDirective;
     /**
      * Reference to the header component for manually
      * invoking functions on the header.
@@ -352,6 +354,7 @@ export declare class DatatableComponent implements OnInit, DoCheck, AfterViewIni
      * Returns if all rows are selected.
      */
     readonly allRowsSelected: boolean;
+    visible: boolean;
     element: HTMLElement;
     _innerWidth: number;
     pageSize: number;
@@ -359,6 +362,7 @@ export declare class DatatableComponent implements OnInit, DoCheck, AfterViewIni
     rowCount: number;
     rowDiffer: KeyValueDiffer<{}, {}>;
     _offsetX: BehaviorSubject<number>;
+    _visible: boolean;
     _limit: number | undefined;
     _count: number;
     _offset: number;
@@ -400,6 +404,7 @@ export declare class DatatableComponent implements OnInit, DoCheck, AfterViewIni
         value: any;
     }[];
     ngDoCheck(): void;
+    ngAfterViewChecked(): void;
     /**
      * Recalc's the sizes of the grid.
      *
@@ -415,7 +420,7 @@ export declare class DatatableComponent implements OnInit, DoCheck, AfterViewIni
     /**
      * Window resize handler to update sizes.
      */
-    onWindowResize(): void;
+    onResize(): void;
     /**
      * Recalulcates the column widths based on column width
      * distribution mode and scrollbar offsets.
