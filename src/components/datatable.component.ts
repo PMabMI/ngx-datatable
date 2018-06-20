@@ -8,7 +8,7 @@ import {
 
 import {
   forceFillColumnWidths, adjustColumnWidths, sortRows,
-  setColumnDefaults, throttleable, translateTemplates
+  setColumnDefaults, throttleable, translateTemplates,
 } from '../utils';
 import { ScrollbarHelper, DimensionsHelper, ColumnChangesService } from '../services';
 import { ColumnMode, SortType, SelectionType, TableColumn, ContextmenuType } from '../types';
@@ -866,7 +866,7 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
     }
 
     if (this.columnMode === ColumnMode.force) {
-      forceFillColumnWidths(columns, width, forceIdx, allowBleed);
+      forceFillColumnWidths(columns, width, forceIdx, allowBleed, !this.headerHeight ? 123 : 300);
     } else if (this.columnMode === ColumnMode.flex) {
       adjustColumnWidths(columns, width);
     }

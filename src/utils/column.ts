@@ -59,8 +59,17 @@ export function columnsTotalWidth(columns: any, prop?: any) {
   let totalWidth = 0;
 
   for(const column of columns) {
+    const { minWidth, maxWidth } = column;
     const has = prop && column[prop];
-    totalWidth = totalWidth + (has ? column[prop] : column.width);
+    let width = has ? column[prop] : column.width;
+
+    if (typeof minWidth === 'number' && minWidth > width) {
+      width = minWidth;
+    } else if (typeof maxWidth === 'number' && maxWidth < width) {
+      width = maxWidth;
+    }
+
+    totalWidth = totalWidth + width;
   }
 
   return totalWidth;
