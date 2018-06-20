@@ -2,7 +2,6 @@ import { EventEmitter, DoCheck, ChangeDetectorRef, KeyValueDiffers } from '@angu
 export declare class DataTableRowWrapperComponent implements DoCheck {
     private cd;
     private differs;
-    innerWidth: number;
     rowDetail: any;
     groupHeader: any;
     offsetX: number;
@@ -15,11 +14,13 @@ export declare class DataTableRowWrapperComponent implements DoCheck {
     }>;
     rowIndex: number;
     expanded: boolean;
+    innerWidth: number;
     groupContext: any;
     rowContext: any;
     private rowDiffer;
     private _expanded;
     private _rowIndex;
+    private _innerWidth;
     constructor(cd: ChangeDetectorRef, differs: KeyValueDiffers);
     ngDoCheck(): void;
     onContextmenu($event: MouseEvent): void;

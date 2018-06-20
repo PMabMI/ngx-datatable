@@ -95,6 +95,14 @@ var DataTableBodyRowComponent = /** @class */ (function () {
         enumerable: true,
         configurable: true
     });
+    Object.defineProperty(DataTableBodyRowComponent.prototype, "rowHeightStyle", {
+        get: function () {
+            var rowHeight = this.rowHeight;
+            return rowHeight !== 'auto' ? rowHeight + "px" : rowHeight;
+        },
+        enumerable: true,
+        configurable: true
+    });
     Object.defineProperty(DataTableBodyRowComponent.prototype, "columnsTotalWidths", {
         get: function () {
             return this._columnGroupWidths.total;
@@ -225,10 +233,14 @@ var DataTableBodyRowComponent = /** @class */ (function () {
         __metadata("design:paramtypes", [])
     ], DataTableBodyRowComponent.prototype, "cssClass", null);
     __decorate([
-        core_1.HostBinding('style.height.px'),
         core_1.Input(),
-        __metadata("design:type", Number)
+        __metadata("design:type", Object)
     ], DataTableBodyRowComponent.prototype, "rowHeight", void 0);
+    __decorate([
+        core_1.HostBinding('style.height.px'),
+        __metadata("design:type", String),
+        __metadata("design:paramtypes", [])
+    ], DataTableBodyRowComponent.prototype, "rowHeightStyle", null);
     __decorate([
         core_1.HostBinding('style.width.px'),
         __metadata("design:type", String),

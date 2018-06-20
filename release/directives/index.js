@@ -8,4 +8,5 @@ __export(require("./long-press.directive"));
 __export(require("./orderable.directive"));
 __export(require("./resizeable.directive"));
 __export(require("./visibility.directive"));
+__export(require("./resize-observer.directive"));
 //# sourceMappingURL=index.js.map

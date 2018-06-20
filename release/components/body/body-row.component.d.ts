@@ -15,7 +15,8 @@ export declare class DataTableBodyRowComponent implements DoCheck {
     displayCheck: any;
     offsetX: number;
     readonly cssClass: string;
-    rowHeight: number;
+    rowHeight: number | string;
+    readonly rowHeightStyle: string;
     readonly columnsTotalWidths: string;
     activate: EventEmitter<any>;
     _element: any;

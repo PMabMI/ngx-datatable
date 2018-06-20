@@ -154,7 +154,15 @@ function getContentWidth(allColumns, defaultColWidth) {
     var contentWidth = 0;
     for (var _i = 0, allColumns_1 = allColumns; _i < allColumns_1.length; _i++) {
         var column = allColumns_1[_i];
-        contentWidth += (column.width || defaultColWidth);
+        var minWidth = column.minWidth, maxWidth = column.maxWidth;
+        var width = column.width || defaultColWidth;
+        if (typeof minWidth === 'number' && minWidth > width) {
+            width = minWidth;
+        }
+        else if (typeof maxWidth === 'number' && maxWidth < width) {
+            width = maxWidth;
+        }
+        contentWidth += width;
     }
     return contentWidth;
 }

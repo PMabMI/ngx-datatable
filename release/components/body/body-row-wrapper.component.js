@@ -24,7 +24,8 @@ var DataTableRowWrapperComponent = /** @class */ (function () {
         this.rowContext = {
             row: this.row,
             expanded: this.expanded,
-            rowIndex: this.rowIndex
+            rowIndex: this.rowIndex,
+            parentWidth: this.innerWidth,
         };
         this._expanded = false;
         this.rowDiffer = differs.find({}).create();
@@ -55,6 +56,19 @@ var DataTableRowWrapperComponent = /** @class */ (function () {
         enumerable: true,
         configurable: true
     });
+    Object.defineProperty(DataTableRowWrapperComponent.prototype, "innerWidth", {
+        get: function () {
+            return this._innerWidth;
+        },
+        set: function (val) {
+            this._innerWidth = val;
+            this.rowContext.parentWidth = val;
+            this.groupContext.parentWidth = val;
+            this.cd.markForCheck();
+        },
+        enumerable: true,
+        configurable: true
+    });
     DataTableRowWrapperComponent.prototype.ngDoCheck = function () {
         if (this.rowDiffer.diff(this.row)) {
             this.rowContext.row = this.row;
@@ -72,10 +86,6 @@ var DataTableRowWrapperComponent = /** @class */ (function () {
         styles['width'] = this.innerWidth;
         return styles;
     };
-    __decorate([
-        core_1.Input(),
-        __metadata("design:type", Number)
-    ], DataTableRowWrapperComponent.prototype, "innerWidth", void 0);
     __decorate([
         core_1.Input(),
         __metadata("design:type", Object)
@@ -114,6 +124,11 @@ var DataTableRowWrapperComponent = /** @class */ (function () {
         __metadata("design:type", Boolean),
         __metadata("design:paramtypes", [Boolean])
     ], DataTableRowWrapperComponent.prototype, "expanded", null);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Number),
+        __metadata("design:paramtypes", [Number])
+    ], DataTableRowWrapperComponent.prototype, "innerWidth", null);
     __decorate([
         core_1.HostListener('contextmenu', ['$event']),
         __metadata("design:type", Function),

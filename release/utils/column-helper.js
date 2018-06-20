@@ -43,6 +43,12 @@ function setColumnDefaults(columns) {
         }
         if (!column.hasOwnProperty('width')) {
             column.width = 150;
+            if (typeof column.minWidth === 'number' && column.minWidth > column.width) {
+                column.width = column.minWidth;
+            }
+            else if (typeof column.maxWidth === 'number' && column.maxWidth < column.width) {
+                column.width = column.maxWidth;
+            }
         }
     }
 }

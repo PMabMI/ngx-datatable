@@ -9,9 +9,9 @@ import { DatatableFooterDirective } from './footer';
 import { DataTableHeaderComponent } from './header';
 import { BehaviorSubject, Subscription } from 'rxjs';
 export declare class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
-    private scrollbarHelper;
-    private dimensionsHelper;
-    private cd;
+    protected scrollbarHelper: ScrollbarHelper;
+    protected dimensionsHelper: DimensionsHelper;
+    protected cd: ChangeDetectorRef;
     private columnChangesService;
     /**
      * Template for the target marker of drag target columns.
@@ -352,8 +352,9 @@ export declare class DatatableComponent implements OnInit, DoCheck, AfterViewIni
      * Returns if all rows are selected.
      */
     readonly allRowsSelected: boolean;
+    visible: boolean;
+    innerWidth: number;
     element: HTMLElement;
-    _innerWidth: number;
     pageSize: number;
     bodyHeight: number;
     rowCount: number;
@@ -369,6 +370,8 @@ export declare class DatatableComponent implements OnInit, DoCheck, AfterViewIni
     _columns: TableColumn[];
     _columnTemplates: QueryList<DataTableColumnDirective>;
     _subscriptions: Subscription[];
+    _visible: boolean;
+    _innerWidth: number;
     constructor(scrollbarHelper: ScrollbarHelper, dimensionsHelper: DimensionsHelper, cd: ChangeDetectorRef, element: ElementRef, differs: KeyValueDiffers, columnChangesService: ColumnChangesService);
     /**
      * Lifecycle hook that is called after data-bound
@@ -414,8 +417,9 @@ export declare class DatatableComponent implements OnInit, DoCheck, AfterViewIni
     recalculate(): void;
     /**
      * Window resize handler to update sizes.
+     * @param {Element} [element]
      */
-    onWindowResize(): void;
+    onResize(element?: Element): void;
     /**
      * Recalulcates the column widths based on column width
      * distribution mode and scrollbar offsets.
