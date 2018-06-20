@@ -39,7 +39,6 @@ import { MouseEvent } from '../../events';
 })
 export class DataTableRowWrapperComponent implements DoCheck {
 
-  @Input() innerWidth: number;
   @Input() rowDetail: any;
   @Input() groupHeader: any;
   @Input() offsetX: number;
@@ -70,6 +69,17 @@ export class DataTableRowWrapperComponent implements DoCheck {
     return this._expanded;
   }
 
+  @Input() set innerWidth(val: number) {
+    this._innerWidth = val;
+    this.rowContext.parentWidth = val;
+    this.groupContext.parentWidth = val;
+    this.cd.markForCheck();
+  }
+
+  get innerWidth(): number {
+    return this._innerWidth;
+  }
+
   groupContext: any = {
     group: this.row,
     expanded: this.expanded,
@@ -79,13 +89,15 @@ export class DataTableRowWrapperComponent implements DoCheck {
   rowContext: any = {
     row: this.row,
     expanded: this.expanded,
-    rowIndex: this.rowIndex
+    rowIndex: this.rowIndex,
+    parentWidth: this.innerWidth,
   };
 
   private rowDiffer: KeyValueDiffer<{}, {}>;
   private _expanded: boolean = false;
   private _rowIndex: number;
-  
+  private _innerWidth: number;
+
   constructor(private cd: ChangeDetectorRef, private differs: KeyValueDiffers) {
     this.rowDiffer = differs.find({}).create();
   }

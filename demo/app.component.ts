@@ -123,6 +123,12 @@ import { Location, LocationStrategy, HashLocationStrategy } from '@angular/commo
               <li><a href="#inline-html-summary" (click)="state='inline-html-summary'">Inline HTML</a></li>
             </ul>
           </li>
+          <li>
+            <h4>Child Datatable</h4>
+            <ul>
+              <li><a href="#child-table" (click)="state='child-table'">Child Table</a></li>
+            </ul>
+          </li>
         </ul>
       </nav>
       <content>
@@ -190,6 +196,9 @@ import { Location, LocationStrategy, HashLocationStrategy } from '@angular/commo
         <summary-row-server-paging-demo *ngIf="state === 'paging-summary'">
         </summary-row-server-paging-demo>
         <summary-row-inline-html *ngIf="state === 'inline-html-summary'"></summary-row-inline-html>
+
+        <!-- Child Datatable -->
+        <child-table-demo *ngIf="state === 'child-table'"></child-table-demo>
       </content>
     </div>
   `

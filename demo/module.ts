@@ -67,6 +67,9 @@ import { SummaryRowCustomTemplateComponent } from './summary/summary-row-custom-
 import { SummaryRowServerPagingComponent } from './summary/summary-row-server-paging.component';
 import { SummaryRowInlineHtmlComponent } from './summary/summary-row-inline-html.component';
 
+// -- Child Table
+import { ChildTableComponent } from './childTable/child-table.component';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -117,6 +120,7 @@ import { SummaryRowInlineHtmlComponent } from './summary/summary-row-inline-html
     SummaryRowCustomTemplateComponent,
     SummaryRowServerPagingComponent,
     SummaryRowInlineHtmlComponent,
+    ChildTableComponent,
   ],
   imports: [BrowserModule, NgxDatatableModule],
   bootstrap: [AppComponent]

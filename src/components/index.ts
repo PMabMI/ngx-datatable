@@ -1,4 +1,5 @@
 export * from './datatable.component';
+export * from './child-datatable.component';
 
 export * from './header';
 export * from './body';

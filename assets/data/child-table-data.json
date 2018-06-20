@@ -1,0 +1,148 @@
+[
+  {
+    "name": "Sealoud",
+    "employeeCount": 7,
+    "employees": [
+      {
+          "name": "Ethel Price",
+          "gender": "female",
+          "age": 22
+      },
+      {
+          "name": "Claudine Neal",
+          "gender": "female",
+          "age": 55
+      },
+      {
+          "name": "Beryl Rice",
+          "gender": "female",
+          "age": 67
+      },
+      {
+          "name": "Wilder Gonzales",
+          "gender": "male"
+      },
+      {
+          "name": "Georgina Schultz",
+          "gender": "female"
+      },
+      {
+          "name": "Carroll Buchanan",
+          "gender": "male"
+      },
+      {
+          "name": "Valarie Atkinson",
+          "gender": "female"
+      }
+    ]
+  },
+  {
+    "name": "Velity",
+    "employeeCount": 9,
+    "employees": [
+      {
+          "name": "Schroeder Mathews",
+          "gender": "male"
+      },
+      {
+          "name": "Lynda Mendoza",
+          "gender": "female"
+      },
+      {
+          "name": "Sarah Massey",
+          "gender": "female"
+      },
+      {
+          "name": "Robles Boyle",
+          "gender": "male"
+      },
+      {
+          "name": "Evans Hickman",
+          "gender": "male"
+      },
+      {
+          "name": "Dawson Barber",
+          "gender": "male"
+      },
+      {
+          "name": "Bruce Strong",
+          "gender": "male"
+      },
+      {
+          "name": "Nellie Whitfield",
+          "gender": "female"
+      },
+      {
+          "name": "Jackson Macias",
+          "gender": "male"
+      }
+    ]
+  },
+  {
+    "name": "Geekko",
+    "employeeCount": 0,
+    "employees": []
+  },
+  {
+    "name": "Suretech",
+    "employeeCount": 14,
+    "employees": [
+      {
+          "name": "Evans Hickman",
+          "gender": "male"
+      },
+      {
+          "name": "Dawson Barber",
+          "gender": "male"
+      },
+      {
+          "name": "Bruce Strong",
+          "gender": "male"
+      },
+      {
+          "name": "Nellie Whitfield",
+          "gender": "female"
+      },
+      {
+          "name": "Jackson Macias",
+          "gender": "male"
+      },
+      {
+          "name": "Pena Pena",
+          "gender": "male"
+      },
+      {
+          "name": "Lelia Gates",
+          "gender": "female"
+      },
+      {
+          "name": "Letitia Vasquez",
+          "gender": "female"
+      },
+      {
+          "name": "Trevino Moreno",
+          "gender": "male"
+      },
+      {
+          "name": "Barr Page",
+          "gender": "male"
+      },
+      {
+          "name": "Kirkland Merrill",
+          "gender": "male"
+      },
+      {
+          "name": "Blanche Conley",
+          "gender": "female"
+      },
+      {
+          "name": "Atkins Dunlap",
+          "gender": "male"
+      },
+      {
+          "name": "Everett Foreman",
+          "gender": "male"
+      }
+    ]
+  }
+]

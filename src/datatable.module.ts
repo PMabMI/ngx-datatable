@@ -23,7 +23,8 @@ import {
   DataTableFooterTemplateDirective,
   DatatableFooterDirective,
   DatatableGroupHeaderTemplateDirective,
-  DataTableSummaryRowComponent
+  DataTableSummaryRowComponent,
+  ChildDatatableComponent,
 } from './components';
 
 import {
@@ -77,6 +78,7 @@ import {
     DatatableFooterDirective,
     DatatableGroupHeaderTemplateDirective,
     DataTableSummaryRowComponent,
+    ChildDatatableComponent,
   ],
   exports: [
     DatatableComponent,
@@ -89,7 +91,8 @@ import {
     DataTableFooterTemplateDirective,
     DatatableFooterDirective,
     DataTablePagerComponent,
-    DatatableGroupHeaderTemplateDirective
+    DatatableGroupHeaderTemplateDirective,
+    ChildDatatableComponent,
   ]
 })
 export class NgxDatatableModule { }
