@@ -97,8 +97,13 @@ export class DataTableBodyRowComponent implements DoCheck {
     return cls;
   }
 
+  @Input() rowHeight: number|string;
+
   @HostBinding('style.height.px')
-  @Input() rowHeight: number;
+  get rowHeightStyle(): string {
+    const rowHeight = this.rowHeight;
+    return rowHeight !== 'auto' ? `${rowHeight}px` : rowHeight;
+  }
 
   @HostBinding('style.width.px')
   get columnsTotalWidths(): string {
