@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import ResizeObserver from 'resize-observer-polyfill';
 
 import {
   DatatableComponent,
@@ -43,8 +42,7 @@ import {
 
 @NgModule({
   imports: [
-    CommonModule,
-    ResizeObserver
+    CommonModule
   ],
   providers: [
     ScrollbarHelper,
