@@ -24,7 +24,6 @@ import {
   DatatableFooterDirective,
   DatatableGroupHeaderTemplateDirective,
   DataTableSummaryRowComponent,
-  ChildDatatableComponent,
 } from './components';
 
 import {
@@ -79,7 +78,6 @@ import {
     DatatableFooterDirective,
     DatatableGroupHeaderTemplateDirective,
     DataTableSummaryRowComponent,
-    ChildDatatableComponent,
     ResizeObserverDirective,
   ],
   exports: [
@@ -94,7 +92,6 @@ import {
     DatatableFooterDirective,
     DataTablePagerComponent,
     DatatableGroupHeaderTemplateDirective,
-    ChildDatatableComponent,
     ResizeObserverDirective,
   ]
 })

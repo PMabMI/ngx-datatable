@@ -31,13 +31,12 @@ import { Component, ViewChild, ViewEncapsulation } from '@angular/core';
             let-expanded="expanded"
             let-parentWidth="parentWidth"
             ngx-datatable-row-detail-template>
-            <ngx-child-datatable
+            <ngx-datatable
               #childDatatable
-              [rows]="row.employees"
               [rowHeight]="'auto'"
               [columnMode]="'force'"
               [headerHeight]="50"
-              [parentWidth]="parentWidth">
+              [rows]="row.employees">
               <!-- Here just to line up the columns to demonstrate resizing -->
               <ngx-datatable-column
                 [width]="50"
@@ -48,7 +47,7 @@ import { Component, ViewChild, ViewEncapsulation } from '@angular/core';
               ></ngx-datatable-column>
               <ngx-datatable-column name="Name" prop="name" [minWidth]="400"></ngx-datatable-column>
               <ngx-datatable-column name="Gender" prop="gender" [minWidth]="200"></ngx-datatable-column>
-            </ngx-child-datatable>
+            </ngx-datatable>
           </ng-template>
         </ngx-datatable-row-detail>
       
