@@ -26,7 +26,10 @@ import { BehaviorSubject, Subscription } from 'rxjs';
   template: `
     <div
       visibilityObserver
-      (visible)="recalculate()">
+      (visible)="visible = $event"
+      resizeObserver
+      [enabled]="visible"
+      (resize)="onResize($event)">
       <datatable-header
         *ngIf="headerHeight"
         [sorts]="sorts"
@@ -69,7 +72,7 @@ import { BehaviorSubject, Subscription } from 'rxjs';
         [rowDetail]="rowDetail"
         [groupHeader]="groupHeader"
         [selected]="selected"
-        [innerWidth]="_innerWidth"
+        [innerWidth]="innerWidth"
         [bodyHeight]="bodyHeight"
         [selectionType]="selectionType"
         [emptyMessage]="messages.emptyMessage"
@@ -656,8 +659,26 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
       this.rows.length !== 0 && allRowsSelected;
   }
 
+  get visible(): boolean {
+    return this._visible;
+  }
+  set visible(val: boolean) {
+    const prevVal = this._visible;
+    this._visible = val;
+    if (val === true && val !== prevVal) {
+      this.onResize();
+    }
+  }
+
+  get innerWidth(): number {
+    return this._innerWidth;
+  }
+  set innerWidth(val: number) {
+    this._innerWidth = val;
+    this.recalculateColumns();
+  }
+
   element: HTMLElement;
-  _innerWidth: number;
   pageSize: number;
   bodyHeight: number;
   rowCount: number = 0;
@@ -674,6 +695,8 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
   _columns: TableColumn[];
   _columnTemplates: QueryList<DataTableColumnDirective>;
   _subscriptions: Subscription[] = [];
+  _visible: boolean = false;
+  _innerWidth: number;
 
   constructor(
     @SkipSelf() protected scrollbarHelper: ScrollbarHelper,
@@ -736,7 +759,7 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
   ngAfterContentInit() {
     this.columnTemplates.changes.subscribe(v =>
       this.translateColumns(v));
-      
+
     this.listenForColumnInputChanges();
   }
 
@@ -814,15 +837,15 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
    */
   recalculate(): void {
     this.recalculateDims();
-    this.recalculateColumns();
+    this.cd.detectChanges();
   }
 
   /**
    * Window resize handler to update sizes.
+   * @param {Element} [element]
    */
-  @HostListener('window:resize')
-  @throttleable(5)
-  onWindowResize(): void {
+  @throttleable(10)
+  onResize(element?: Element): void {
     this.recalculate();
   }
 
@@ -837,7 +860,7 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
 
     if (!columns) return undefined;
 
-    let width = this._innerWidth;
+    let width = this.innerWidth;
     if (this.scrollbarV) {
       width = width - this.scrollbarHelper.width;
     }
@@ -858,7 +881,7 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
    */
   recalculateDims(): void {
     const dims = this.dimensionsHelper.getDimensions(this.element);
-    this._innerWidth = Math.floor(dims.width);
+    this.innerWidth = Math.floor(dims.width);
 
     if (this.scrollbarV) {
       let height = dims.height;
@@ -1118,11 +1141,11 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
   onBodySelect(event: any): void {
     this.select.emit(event);
   }
-    
+
   ngOnDestroy() {
     this._subscriptions.forEach(subscription => subscription.unsubscribe());
   }
-  
+
   /**
    * listen for changes to input bindings of all DataTableColumnDirective and
    * trigger the columnTemplates.changes observable to emit

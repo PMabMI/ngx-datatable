@@ -161,12 +161,15 @@ function getContentWidth(allColumns: any, defaultColWidth: number = 300): number
   let contentWidth = 0;
 
   for(const column of allColumns) {
+    const { minWidth, maxWidth } = column;
     let width = column.width || defaultColWidth;
-    if (typeof column.minWidth === 'number' && column.minWidth > width) {
-      width = column.minWidth;
-    } else if (typeof column.maxWidth === 'number' && column.maxWidth < width) {
-      width = column.maxWidth;
+
+    if (typeof minWidth === 'number' && minWidth > width) {
+      width = minWidth;
+    } else if (typeof maxWidth === 'number' && maxWidth < width) {
+      width = maxWidth;
     }
+
     contentWidth += width;
   }
 
