@@ -4371,7 +4371,7 @@ var DatatableComponent = /** @class */ (function () {
             width = width - this.scrollbarHelper.width;
         }
         if (this.columnMode === types_1.ColumnMode.force) {
-            utils_1.forceFillColumnWidths(columns, width, forceIdx, allowBleed);
+            utils_1.forceFillColumnWidths(columns, width, forceIdx, allowBleed, !this.headerHeight ? 123 : 300);
         }
         else if (this.columnMode === types_1.ColumnMode.flex) {
             utils_1.adjustColumnWidths(columns, width);
@@ -7562,8 +7562,16 @@ function columnsTotalWidth(columns, prop) {
     var totalWidth = 0;
     for (var _i = 0, columns_2 = columns; _i < columns_2.length; _i++) {
         var column = columns_2[_i];
+        var minWidth = column.minWidth, maxWidth = column.maxWidth;
         var has = prop && column[prop];
-        totalWidth = totalWidth + (has ? column[prop] : column.width);
+        var width = has ? column[prop] : column.width;
+        if (typeof minWidth === 'number' && minWidth > width) {
+            width = minWidth;
+        }
+        else if (typeof maxWidth === 'number' && maxWidth < width) {
+            width = maxWidth;
+        }
+        totalWidth = totalWidth + width;
     }
     return totalWidth;
 }
@@ -7832,7 +7840,7 @@ function forceFillColumnWidths(allColumns, expectedWidth, startIdx, allowBleed, 
         contentWidth = getContentWidth(allColumns);
         remainingWidth = expectedWidth - contentWidth;
         removeProcessedColumns(columnsToResize, columnsProcessed);
-    } while (remainingWidth > 0 && columnsToResize.length !== 0);
+    } while (remainingWidth !== 0 && columnsToResize.length !== 0);
 }
 exports.forceFillColumnWidths = forceFillColumnWidths;
 /**

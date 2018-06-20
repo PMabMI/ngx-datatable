@@ -643,7 +643,7 @@ var DatatableComponent = /** @class */ (function () {
             width = width - this.scrollbarHelper.width;
         }
         if (this.columnMode === types_1.ColumnMode.force) {
-            utils_1.forceFillColumnWidths(columns, width, forceIdx, allowBleed);
+            utils_1.forceFillColumnWidths(columns, width, forceIdx, allowBleed, !this.headerHeight ? 123 : 300);
         }
         else if (this.columnMode === types_1.ColumnMode.flex) {
             utils_1.adjustColumnWidths(columns, width);

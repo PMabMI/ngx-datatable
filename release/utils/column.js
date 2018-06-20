@@ -61,8 +61,16 @@ function columnsTotalWidth(columns, prop) {
     var totalWidth = 0;
     for (var _i = 0, columns_2 = columns; _i < columns_2.length; _i++) {
         var column = columns_2[_i];
+        var minWidth = column.minWidth, maxWidth = column.maxWidth;
         var has = prop && column[prop];
-        totalWidth = totalWidth + (has ? column[prop] : column.width);
+        var width = has ? column[prop] : column.width;
+        if (typeof minWidth === 'number' && minWidth > width) {
+            width = minWidth;
+        }
+        else if (typeof maxWidth === 'number' && maxWidth < width) {
+            width = maxWidth;
+        }
+        totalWidth = totalWidth + width;
     }
     return totalWidth;
 }
