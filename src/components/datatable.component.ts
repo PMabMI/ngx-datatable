@@ -699,9 +699,9 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
   _innerWidth: number;
 
   constructor(
-    @SkipSelf() protected scrollbarHelper: ScrollbarHelper,
-    @SkipSelf() protected dimensionsHelper: DimensionsHelper,
-    protected cd: ChangeDetectorRef,
+    @SkipSelf() private scrollbarHelper: ScrollbarHelper,
+    @SkipSelf() private dimensionsHelper: DimensionsHelper,
+    private cd: ChangeDetectorRef,
     element: ElementRef,
     differs: KeyValueDiffers,
     private columnChangesService: ColumnChangesService) {
