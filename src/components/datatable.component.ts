@@ -26,7 +26,10 @@ import { BehaviorSubject, Subscription } from 'rxjs';
   template: `
     <div
       visibilityObserver
-      (visible)="recalculate()">
+      (visible)="visible = $event"
+      resizeObserver
+      [enabled]="visible"
+      (resize)="onResize($event)">
       <datatable-header
         *ngIf="headerHeight"
         [sorts]="sorts"
@@ -656,6 +659,17 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
       this.rows.length !== 0 && allRowsSelected;
   }
 
+  get visible(): boolean {
+    return this._visible;
+  }
+  set visible(val: boolean) {
+    const prevVal = this._visible;
+    this._visible = val;
+    if (val === true && val !== prevVal) {
+      this.onResize();
+    }
+  }
+
   element: HTMLElement;
   _innerWidth: number;
   pageSize: number;
@@ -674,6 +688,7 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
   _columns: TableColumn[];
   _columnTemplates: QueryList<DataTableColumnDirective>;
   _subscriptions: Subscription[] = [];
+  _visible: boolean = false;
 
   constructor(
     @SkipSelf() private scrollbarHelper: ScrollbarHelper,
@@ -736,7 +751,7 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
   ngAfterContentInit() {
     this.columnTemplates.changes.subscribe(v =>
       this.translateColumns(v));
-      
+
     this.listenForColumnInputChanges();
   }
 
@@ -813,16 +828,18 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
    * Also can be manually invoked or upon window resize.
    */
   recalculate(): void {
+    console.log('recalculate');
     this.recalculateDims();
     this.recalculateColumns();
+    this.cd.detectChanges();
   }
 
   /**
    * Window resize handler to update sizes.
+   * @param {Element} [element]
    */
-  @HostListener('window:resize')
   @throttleable(5)
-  onWindowResize(): void {
+  onResize(element?: Element): void {
     this.recalculate();
   }
 
@@ -1118,11 +1135,11 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
   onBodySelect(event: any): void {
     this.select.emit(event);
   }
-    
+
   ngOnDestroy() {
     this._subscriptions.forEach(subscription => subscription.unsubscribe());
   }
-  
+
   /**
    * listen for changes to input bindings of all DataTableColumnDirective and
    * trigger the columnTemplates.changes observable to emit

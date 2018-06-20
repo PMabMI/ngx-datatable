@@ -31,7 +31,8 @@ import {
   LongPressDirective,
   ResizeableDirective,
   OrderableDirective,
-  DraggableDirective
+  DraggableDirective,
+  ResizeObserverDirective
 } from './directives';
 
 import {
@@ -77,6 +78,7 @@ import {
     DatatableFooterDirective,
     DatatableGroupHeaderTemplateDirective,
     DataTableSummaryRowComponent,
+    ResizeObserverDirective,
   ],
   exports: [
     DatatableComponent,
@@ -89,7 +91,8 @@ import {
     DataTableFooterTemplateDirective,
     DatatableFooterDirective,
     DataTablePagerComponent,
-    DatatableGroupHeaderTemplateDirective
+    DatatableGroupHeaderTemplateDirective,
+    ResizeObserverDirective,
   ]
 })
 export class NgxDatatableModule { }
