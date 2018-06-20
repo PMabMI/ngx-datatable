@@ -72,7 +72,7 @@ import { BehaviorSubject, Subscription } from 'rxjs';
         [rowDetail]="rowDetail"
         [groupHeader]="groupHeader"
         [selected]="selected"
-        [innerWidth]="_innerWidth"
+        [innerWidth]="innerWidth"
         [bodyHeight]="bodyHeight"
         [selectionType]="selectionType"
         [emptyMessage]="messages.emptyMessage"
@@ -670,8 +670,15 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
     }
   }
 
+  get innerWidth(): number {
+    return this._innerWidth;
+  }
+  set innerWidth(val: number) {
+    this._innerWidth = val;
+    this.recalculateColumns();
+  }
+
   element: HTMLElement;
-  _innerWidth: number;
   pageSize: number;
   bodyHeight: number;
   rowCount: number = 0;
@@ -689,6 +696,7 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
   _columnTemplates: QueryList<DataTableColumnDirective>;
   _subscriptions: Subscription[] = [];
   _visible: boolean = false;
+  _innerWidth: number;
 
   constructor(
     @SkipSelf() private scrollbarHelper: ScrollbarHelper,
@@ -828,9 +836,7 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
    * Also can be manually invoked or upon window resize.
    */
   recalculate(): void {
-    console.log('recalculate');
     this.recalculateDims();
-    this.recalculateColumns();
     this.cd.detectChanges();
   }
 
@@ -838,7 +844,7 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
    * Window resize handler to update sizes.
    * @param {Element} [element]
    */
-  @throttleable(5)
+  @throttleable(10)
   onResize(element?: Element): void {
     this.recalculate();
   }
@@ -854,7 +860,7 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
 
     if (!columns) return undefined;
 
-    let width = this._innerWidth;
+    let width = this.innerWidth;
     if (this.scrollbarV) {
       width = width - this.scrollbarHelper.width;
     }
@@ -875,7 +881,7 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
    */
   recalculateDims(): void {
     const dims = this.dimensionsHelper.getDimensions(this.element);
-    this._innerWidth = Math.floor(dims.width);
+    this.innerWidth = Math.floor(dims.width);
 
     if (this.scrollbarV) {
       let height = dims.height;
