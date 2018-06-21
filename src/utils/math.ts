@@ -121,8 +121,9 @@ export function forceFillColumnWidths(
     for (const column of columnsToResize) {
       if (exceedsWindow && allowBleed) {
         column.width = column.$$oldWidth || column.width || defaultColWidth;
+        columnsProcessed.push(column);
       } else {
-        const newSize = (column.width || defaultColWidth) + additionWidthPerColumn;
+        const newSize = (column.width === 0 ? 0 : (column.width || defaultColWidth)) + additionWidthPerColumn;
 
         if (column.minWidth && newSize < column.minWidth) {
           column.width = column.minWidth;
@@ -132,6 +133,10 @@ export function forceFillColumnWidths(
           columnsProcessed.push(column);
         } else {
           column.width = newSize;
+
+          if (newSize < 0) {
+            columnsProcessed.push(column);
+          }
         }
       }
 
@@ -141,6 +146,14 @@ export function forceFillColumnWidths(
     contentWidth = getContentWidth(allColumns);
     remainingWidth = expectedWidth - contentWidth;
     removeProcessedColumns(columnsToResize, columnsProcessed);
+
+    // Certain ratios can result in infinite loops, so run until the remaining width is less than 1 and add the
+    // remainder to the first column left to resize to minimize visual impact on the width disparity.
+    if (Math.abs(remainingWidth) < 1 && columnsToResize.length > 0) {
+      const column = columnsToResize[0];
+      column.width = Math.max(0, column.width + remainingWidth);
+      remainingWidth = 0;
+    }
   } while (remainingWidth !== 0 && columnsToResize.length !== 0);
 }
 
@@ -150,7 +163,9 @@ export function forceFillColumnWidths(
 function removeProcessedColumns(columnsToResize: any[], columnsProcessed: any[]) {
   for(const column of columnsProcessed) {
     const index = columnsToResize.indexOf(column);
-    columnsToResize.splice(index, 1);
+    if (index >= 0) {
+      columnsToResize.splice(index, 1);
+    }
   }
 }
 
@@ -162,7 +177,7 @@ function getContentWidth(allColumns: any, defaultColWidth: number = 300): number
 
   for(const column of allColumns) {
     const { minWidth, maxWidth } = column;
-    let width = column.width || defaultColWidth;
+    let width = (column.width === 0 ? 0 : (column.width || defaultColWidth));
 
     if (typeof minWidth === 'number' && minWidth > width) {
       width = minWidth;
