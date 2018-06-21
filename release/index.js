@@ -7820,9 +7820,10 @@ function forceFillColumnWidths(allColumns, expectedWidth, startIdx, allowBleed, 
             var column = columnsToResize_2[_a];
             if (exceedsWindow && allowBleed) {
                 column.width = column.$$oldWidth || column.width || defaultColWidth;
+                columnsProcessed.push(column);
             }
             else {
-                var newSize = (column.width || defaultColWidth) + additionWidthPerColumn;
+                var newSize = (column.width === 0 ? 0 : (column.width || defaultColWidth)) + additionWidthPerColumn;
                 if (column.minWidth && newSize < column.minWidth) {
                     column.width = column.minWidth;
                     columnsProcessed.push(column);
@@ -7833,6 +7834,9 @@ function forceFillColumnWidths(allColumns, expectedWidth, startIdx, allowBleed, 
                 }
                 else {
                     column.width = newSize;
+                    if (newSize < 0) {
+                        columnsProcessed.push(column);
+                    }
                 }
             }
             column.width = Math.max(0, column.width);
@@ -7840,6 +7844,13 @@ function forceFillColumnWidths(allColumns, expectedWidth, startIdx, allowBleed, 
         contentWidth = getContentWidth(allColumns);
         remainingWidth = expectedWidth - contentWidth;
         removeProcessedColumns(columnsToResize, columnsProcessed);
+        // Certain ratios can result in infinite loops, so run until the remaining width is less than 1 and add the
+        // remainder to the first column left to resize to minimize visual impact on the width disparity.
+        if (Math.abs(remainingWidth) < 1 && columnsToResize.length > 0) {
+            var column = columnsToResize[0];
+            column.width = Math.max(0, column.width + remainingWidth);
+            remainingWidth = 0;
+        }
     } while (remainingWidth !== 0 && columnsToResize.length !== 0);
 }
 exports.forceFillColumnWidths = forceFillColumnWidths;
@@ -7850,7 +7861,9 @@ function removeProcessedColumns(columnsToResize, columnsProcessed) {
     for (var _i = 0, columnsProcessed_1 = columnsProcessed; _i < columnsProcessed_1.length; _i++) {
         var column = columnsProcessed_1[_i];
         var index = columnsToResize.indexOf(column);
-        columnsToResize.splice(index, 1);
+        if (index >= 0) {
+            columnsToResize.splice(index, 1);
+        }
     }
 }
 /**
@@ -7862,7 +7875,7 @@ function getContentWidth(allColumns, defaultColWidth) {
     for (var _i = 0, allColumns_1 = allColumns; _i < allColumns_1.length; _i++) {
         var column = allColumns_1[_i];
         var minWidth = column.minWidth, maxWidth = column.maxWidth;
-        var width = column.width || defaultColWidth;
+        var width = (column.width === 0 ? 0 : (column.width || defaultColWidth));
         if (typeof minWidth === 'number' && minWidth > width) {
             width = minWidth;
         }

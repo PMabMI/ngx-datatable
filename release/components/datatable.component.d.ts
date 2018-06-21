@@ -9,9 +9,9 @@ import { DatatableFooterDirective } from './footer';
 import { DataTableHeaderComponent } from './header';
 import { BehaviorSubject, Subscription } from 'rxjs';
 export declare class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
-    protected scrollbarHelper: ScrollbarHelper;
-    protected dimensionsHelper: DimensionsHelper;
-    protected cd: ChangeDetectorRef;
+    private scrollbarHelper;
+    private dimensionsHelper;
+    private cd;
     private columnChangesService;
     /**
      * Template for the target marker of drag target columns.
