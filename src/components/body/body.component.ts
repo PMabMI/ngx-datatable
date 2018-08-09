@@ -64,6 +64,8 @@ import { MouseEvent } from '../../events';
             [expanded]="getRowExpanded(group)"
             [rowClass]="rowClass"
             [displayCheck]="displayCheck"
+            [treeStatus]="group.treeStatus"
+            (treeAction)="onTreeAction(group)"
             (activate)="selector.onActivate($event, indexes.first + i)">
           </datatable-body-row>
           <ng-template #groupedRowsTemplate>
@@ -220,6 +222,7 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
   @Output() select: EventEmitter<any> = new EventEmitter();
   @Output() detailToggle: EventEmitter<any> = new EventEmitter();
   @Output() rowContextmenu = new EventEmitter<{ event: MouseEvent, row: any }>(false);
+  @Output() treeAction: EventEmitter<any> = new EventEmitter();
 
   @ViewChild(ScrollerComponent) scroller: ScrollerComponent;
 
@@ -232,11 +235,11 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
 
   /**
    * Property that would calculate the height of scroll bar
-   * based on the row heights cache for virtual scroll. Other scenarios
+   * based on the row heights cache for virtual scroll and virtualization. Other scenarios
    * calculate scroll height automatically (as height will be undefined).
    */
   get scrollHeight(): number | undefined {
-    if (this.scrollbarV && this.rowCount) {
+    if (this.scrollbarV && this.virtualization && this.rowCount) {
       return this.rowHeightsCache.query(this.rowCount - 1);
     }
     // avoid TS7030: Not all code paths return a value.
@@ -325,10 +328,12 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
     // scroller is missing on empty table
     if (!this.scroller) return;
 
-    if (this.scrollbarV && offset) {
+    if (this.scrollbarV && this.virtualization && offset) {
       // First get the row Index that we need to move to.
       const rowIndex = this.pageSize * offset;
       offset = this.rowHeightsCache.query(rowIndex - 1);
+    } else if (this.scrollbarV && !this.virtualization) {
+      offset = 0;
     }
 
     this.scroller.setOffset(offset || 0);
@@ -511,7 +516,7 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
       styles['width'] = this._columnGroupWidths.total;
     }
 
-    if (this.scrollbarV) {
+    if (this.scrollbarV && this.virtualization) {
       let idx = 0;
 
       if (this.groupedRows) {
@@ -600,7 +605,7 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
    * when the entire row array state has changed.
    */
   refreshRowHeightCache(): void {
-    if (!this.scrollbarV) return;
+    if (!this.scrollbarV || (this.scrollbarV && !this.virtualization)) return;
 
     // clear the previous row height cache if already present.
     // this is useful during sorts, filters where the state of the
@@ -630,7 +635,7 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
     // first index.
     const viewPortFirstRowIndex = this.indexes.first;
 
-    if (this.scrollbarV) {
+    if (this.scrollbarV && this.virtualization) {
       const offsetScroll = this.rowHeightsCache.query(viewPortFirstRowIndex - 1);
       return offsetScroll <= this.offsetY ? viewPortFirstRowIndex - 1 : viewPortFirstRowIndex;
     }
@@ -650,7 +655,7 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
     let expanded = this.rowExpansions.get(row);
 
     // If the detailRowHeight is auto --> only in case of non-virtualized scroll
-    if (this.scrollbarV) {
+    if (this.scrollbarV && this.virtualization) {
       const detailRowHeight = this.getDetailRowHeight(row) * (expanded ? -1 : 1);
       // const idx = this.rowIndexes.get(row) || 0;
       const idx = this.getRowIndex(row);
@@ -754,6 +759,10 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
    */
   getRowIndex(row: any): number {
     return this.rowIndexes.get(row) || 0;
+  }
+
+  onTreeAction(row: any) {
+    this.treeAction.emit({ row });
   }
 
 }
